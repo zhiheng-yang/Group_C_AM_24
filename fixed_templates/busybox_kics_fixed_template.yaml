@@ -1,0 +1,164 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: busybox-namespace
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-pod
+  namespace: busybox-namespace
+  labels:
+    app: busybox-app
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    container.apparmor.security.beta.kubernetes.io/busybox-container: runtime/default
+spec:
+  containers:
+  - name: busybox-container
+    image: busybox:1@sha256:5cd228af7cde277502487da780b34ba111b8fcdcf37ca518d68c5ba565002b36
+    imagePullPolicy: Always
+    command:
+    - /bin/sh
+    args:
+    - -c
+    - while true; do echo "Hello, World!"; sleep 10; done
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 250m
+      limits:
+        memory: 128Mi
+        cpu: 250m
+    livenessProbe:
+      exec:
+        command:
+        - ls
+        - /
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    readinessProbe:
+      exec:
+        command:
+        - ls
+        - /
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    ports:
+    - containerPort: 8089
+    securityContext:
+      allowPrivilegeEscalation: false
+      runAsUser: 25000
+      capabilities:
+        drop:
+        - ALL
+      runAsNonRoot: true
+      runAsGroup: 25000
+      readOnlyRootFilesystem: true
+  securityContext:
+    runAsUser: 25000
+    seccompProfile:
+      type: RuntimeDefault
+    runAsNonRoot: true
+    runAsGroup: 25000
+  serviceAccountName: SAtest0
+  automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: busybox-service
+  namespace: busybox-namespace
+spec:
+  type: ClusterIP
+  selector:
+    app: busybox-app
+  ports:
+  - name: busybox-service-port
+    protocol: TCP
+    port: 80
+    targetPort: 8089
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: busybox-net-policy
+  namespace: busybox-namespace
+spec:
+  podSelector:
+    matchLabels:
+      app: busybox-app
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - ipBlock:
+        cidr: 10.0.1.0/24
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.0.1.0/24
+    ports:
+    - protocol: TCP
+      port: 5978
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-min-max-demo-lr
+  namespace: busybox-namespace
+spec:
+  limits:
+  - max:
+      cpu: 800m
+    min:
+      cpu: 250m
+    type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: cpu-min-max-demo-lr
+  namespace: default
+spec:
+  limits:
+  - max:
+      cpu: 800m
+    min:
+      cpu: 250m
+    type: Container
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: pods-high
+  namespace: busybox-namespace
+spec:
+  hard:
+    cpu: '1000'
+    memory: 200Gi
+    pods: '10'
+  scopeSelector:
+    matchExpressions:
+    - operator: In
+      scopeName: PriorityClass
+      values:
+      - high
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: pods-high
+  namespace: default
+spec:
+  hard:
+    cpu: '1000'
+    memory: 200Gi
+    pods: '10'
+  scopeSelector:
+    matchExpressions:
+    - operator: In
+      scopeName: PriorityClass
+      values:
+      - high
