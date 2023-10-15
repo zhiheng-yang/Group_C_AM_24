@@ -1,6 +1,6 @@
-# Group A - Trento Experiments
+# Group C - Trento Experiments
 
-This repository contains the Helm Charts and GitHub Actions that Group A will analyze.
+This repository contains the Helm Charts and GitHub Actions that Group C will analyze.
 
 In this repository, you can run GitHub Actions to analyze a chart template and later evaluate the results. Please, submit your answers in the corresponding Qualtrics survey.
 
