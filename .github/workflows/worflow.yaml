@@ -1,0 +1,44 @@
+name: Main Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+
+      chart_folder:
+        description: 'The name of the Helm Chart'
+        required: true
+        default: 'busybox'
+        type: string
+
+      first_tool:
+        description: 'The tool to analyze the chart'
+        required: true
+        default: 'checkov'
+        type: string
+
+jobs:
+
+  step_1:
+    uses: ./.github/workflows/run_checker.yaml
+    with:
+      iteration: 1
+      chart_folder: ${{ inputs.chart_folder }}
+      first_tool: ${{ inputs.first_tool }}
+    secrets: inherit
+
+  step_2:
+    needs: [step_1]
+    uses: ./.github/workflows/fix_chart.yaml
+    with:
+      iteration: 1
+      chart_folder: ${{ inputs.chart_folder }}
+      first_tool: ${{ inputs.first_tool }}
+
+  debug:
+    needs: [step_1, step_2]
+    uses: ./.github/workflows/run_checker.yaml
+    with:
+      iteration: 2
+      chart_folder: ${{ inputs.chart_folder }}
+      first_tool: ${{ inputs.first_tool }}
+    secrets: inherit

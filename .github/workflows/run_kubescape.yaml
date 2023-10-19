@@ -1,0 +1,59 @@
+name: Run Kubescape
+
+on:
+  workflow_call:
+    inputs:
+
+      iteration:
+        required: true
+        type: string
+
+      chart_folder:
+        required: true
+        type: string
+
+
+jobs:
+
+  run_kubescape:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          ref: 'main'
+
+      - name: Define template chart folder - original
+        if: ${{ inputs.iteration == '1'}}
+        run: echo "TEMPLATE=templates/${{ inputs.chart_folder }}_template.yaml" >> $GITHUB_ENV
+
+      - name: Define template chart folder - fixed
+        if: ${{ inputs.iteration == '2'}}
+        run: echo "TEMPLATE=fixed_templates/${{ inputs.chart_folder }}_${{ inputs.first_tool }}_fixed_template.yaml" >> $GITHUB_ENV
+
+      - name: Define template chart folder - functionalities
+        if: ${{ inputs.iteration == '3'}}
+        run: echo "TEMPLATE=functionality_templates/${{ inputs.chart_folder }}_func_template.yaml" >> $GITHUB_ENV
+
+      - name: Test with Kubescape
+        uses: kubescape/github-action@main
+        with:
+          format: json
+          outputFile: scan_results_${{ inputs.iteration }}.json
+          files: "${{ env.TEMPLATE }}"
+          exceptions: kubescape_exceptions.yaml
+        continue-on-error: true
+        # Reference: https://github.com/kubescape/github-action
+
+      - name: Print Kubescape result
+        shell: bash
+        run: jq . scan_results_${{ inputs.iteration }}.json
+
+      - name: Upload the JSON results artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: scan_results_${{ inputs.iteration }}
+          path: scan_results_${{ inputs.iteration }}.json
+          if-no-files-found: error

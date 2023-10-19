@@ -1,0 +1,49 @@
+name: Count final checks
+
+on:
+  workflow_call:
+    inputs:
+
+      iteration:
+        required: true
+        type: string
+
+      second_tool:
+        required: true
+        type: string  
+
+jobs:
+
+  count_checks:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          ref: 'main'
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Download tool JSON result artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: scan_results_${{ inputs.iteration }}
+
+      - name: Install python packages
+        shell: bash
+        run: |
+          cd .github/scripts
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Count checks
+        shell: bash
+        run: python .github/scripts/main.py --count-checks
+        env:
+          iteration: ${{ inputs.iteration }}
+          second_tool: ${{ inputs.second_tool }}

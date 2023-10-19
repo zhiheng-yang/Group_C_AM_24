@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+certifi = "==2022.12.7"
+charset-normalizer = "==3.1.0"
+idna = "==3.4"
+packaging = "==23.0"
+pyyaml = "==6.0"
+requests = "==2.28.2"
+"ruamel.yaml" = "==0.17.21"
+"ruamel.yaml.clib" = "==0.2.7"
+urllib3 = "==1.26.15"
+websocket-client = "==1.5.1"
+pandas = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

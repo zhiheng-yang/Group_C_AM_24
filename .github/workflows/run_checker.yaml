@@ -1,0 +1,40 @@
+name: Run checker tool
+
+on:
+  workflow_call:
+    inputs:
+
+      iteration:
+        required: true
+        type: string
+
+      chart_folder:
+        required: true
+        type: string
+
+      first_tool:
+        type: string
+
+jobs:
+
+  run_checkov_first:
+    if: ${{ inputs.first_tool == 'checkov' }}
+    uses: ./.github/workflows/run_checkov.yaml
+    with:
+      iteration: ${{ inputs.iteration }}
+      chart_folder: ${{ inputs.chart_folder }}
+
+  run_kics_first:
+    if: ${{ inputs.first_tool == 'kics' }}
+    uses: ./.github/workflows/run_kics.yaml
+    with:
+      iteration: ${{ inputs.iteration }}
+      chart_folder: ${{ inputs.chart_folder }}
+
+  run_kubescape_first:
+    if: ${{ inputs.first_tool == 'kubescape' }}
+    uses: ./.github/workflows/run_kubescape.yaml      
+    with:
+      iteration: ${{ inputs.iteration }}
+      chart_folder: ${{ inputs.chart_folder }}
+    secrets: inherit
