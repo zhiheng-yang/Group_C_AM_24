@@ -238,8 +238,6 @@ def set_template(template: dict, check_id: str, check: dict) -> None:
     # If Network Policy missing issue, create and append one
     elif check_id == "check_40":
 
-        pass
-
         # app = get_app_label(template, check["resource_path"])
         # Append Network Policy to the template
         net_policy1, net_policy2 = set_net_policy()
@@ -1879,6 +1877,66 @@ def set_img_digest(obj: dict):
             obj["image"] = image_name + ":" + image_tag + "@" + image_digest
 
 
+def change_net_policy(name="test-network-policy") -> dict:
+    """
+    Remove an empty or wrong defined network policy and returns a correct one.
+    """
+
+    # Remove empty network policy
+    # save name and namespace
+
+    # TODO
+
+    net_policy = {
+        'apiVersion': 'networking.k8s.io/v1',
+        'kind': 'NetworkPolicy',
+        'metadata': {
+            'name': name,
+            'namespace': 'test-ns'
+        },
+        'spec': {
+            'podSelector': {},
+            'policyTypes': ['Ingress', 'Egress'],
+            'ingress': [{
+                'from': [{
+                    'ipBlock': {
+                        'cidr': '172.17.0.0/16',
+                        'except': ['172.17.1.0/24']
+                    }
+                }, {
+                    'namespaceSelector': {
+                        'matchLabels': {
+                            'project': 'myproject'
+                        }
+                    }
+                }, {
+                    'podSelector': {
+                        'matchLabels': {
+                            'role': 'frontend'
+                        }
+                    }
+                }],
+                'ports': [{
+                    'protocol': 'TCP',
+                    'port': 6379
+                }]
+            }],
+            'egress': [{
+                'to': [{
+                    'ipBlock': {
+                        'cidr': '10.0.0.0/24'
+                    }
+                }],
+                'ports': [{
+                    'protocol': 'TCP',
+                    'port': 5978
+                }]
+            }]
+        }
+    }
+    return net_policy
+
+
 def set_net_policy(name="test-network-policy") -> dict:
     """Returns a network policy for each K8s object.
 
@@ -2029,6 +2087,7 @@ class FuncLookupClass:
     "check_66": set_ingress_host,
     "check_67": set_pdb_max_unavailable,
     "check_68": remove_ssh_port,
+    "check_69": change_net_policy
     }
 
     @classmethod

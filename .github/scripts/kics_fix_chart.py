@@ -412,7 +412,8 @@ class LookupClass:
         "1db3a5a5-bf75-44e5-9e44-c56cfc8b1ac5": "check_60",
         "26763a1c-5dda-4772-b507-5fca7fb5f165": "check_56",
         "aee3c7d2-a811-4201-90c7-11c028be9a46": "check_6",
-        "c1032cf7-3628-44e2-bd53-38c17cf31b6b": "check_62",
+        # "c1032cf7-3628-44e2-bd53-38c17cf31b6b": "check_62",
+        "c1032cf7-3628-44e2-bd53-38c17cf31b6b": "",
         "592ad21d-ad9b-46c6-8d2d-fad09d62a942": "check_54",
         "aa8f7a35-9923-4cad-bd61-a19b7f6aac91": "check_47",
         "5308a7a8-06f8-45ac-bf10-791fe21de46e": "check_47",
@@ -422,6 +423,7 @@ class LookupClass:
         "c589f42c-7924-4871-aee2-1cede9bc7cbc": "check_54",
         "85ab1c5b-014e-4352-b5f8-d7dea3bb4fd3": "",
         "a6f34658-fdfb-4154-9536-56d516f65828": "check_15",
+        "0401f71b-9c1e-4821-ab15-a955caa621be": "" # check_69 --- change network policy
     }
 
     @classmethod

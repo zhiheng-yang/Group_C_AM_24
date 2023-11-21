@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -26,7 +26,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -41,7 +41,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -55,7 +55,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 data: null
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -762,7 +762,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: release-name-cert-manager-cainjector:leaderelection
-  namespace: busybox-namespace
+  namespace: cert-manager
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
@@ -794,7 +794,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: release-name-cert-manager:leaderelection
-  namespace: busybox-namespace
+  namespace: cert-manager
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
@@ -833,7 +833,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 rules:
 - apiGroups:
   - v1
@@ -846,7 +846,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: release-name-cert-manager-cainjector:leaderelection
-  namespace: busybox-namespace
+  namespace: cert-manager
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
@@ -868,7 +868,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: release-name-cert-manager:leaderelection
-  namespace: busybox-namespace
+  namespace: cert-manager
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
@@ -899,7 +899,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -921,7 +921,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 spec:
   type: ClusterIP
   ports:
@@ -946,7 +946,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 spec:
   type: ClusterIP
   ports:
@@ -994,7 +994,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 spec:
   replicas: 1
   selector:
@@ -1099,7 +1099,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 spec:
   replicas: 1
   selector:
@@ -1217,7 +1217,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 spec:
   replicas: 1
   selector:
@@ -1410,7 +1410,7 @@ metadata:
     app.kubernetes.io/version: v1.12.1
     app.kubernetes.io/managed-by: Helm
     helm.sh/chart: cert-manager-v1.12.1
-  namespace: busybox-namespace
+  namespace: cert-manager
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -1428,7 +1428,7 @@ metadata:
     helm.sh/hook: post-install
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
     helm.sh/hook-weight: '-5'
-  namespace: busybox-namespace
+  namespace: cert-manager
 rules:
 - apiGroups:
   - cert-manager.io
@@ -1453,7 +1453,7 @@ metadata:
     helm.sh/hook: post-install
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
     helm.sh/hook-weight: '-5'
-  namespace: busybox-namespace
+  namespace: cert-manager
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -1502,7 +1502,7 @@ metadata:
     helm.sh/hook: post-install
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
     helm.sh/hook-weight: '1'
-  namespace: busybox-namespace
+  namespace: cert-manager
 spec:
   backoffLimit: 4
   template:
@@ -1554,7 +1554,7 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: cpu-min-max-demo-lr
-  namespace: busybox-namespace
+  namespace: cert-manager
 spec:
   limits:
   - max:
@@ -1567,7 +1567,7 @@ apiVersion: v1
 kind: LimitRange
 metadata:
   name: cpu-min-max-demo-lr
-  namespace: default
+  namespace: cert-manager
 spec:
   limits:
   - max:
@@ -1580,7 +1580,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: pods-high
-  namespace: busybox-namespace
+  namespace: cert-manager
 spec:
   hard:
     cpu: '1000'
@@ -1597,7 +1597,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: pods-high
-  namespace: default
+  namespace: cert-manager
 spec:
   hard:
     cpu: '1000'

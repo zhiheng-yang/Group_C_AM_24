@@ -135,7 +135,7 @@ def fix_issue(control: str, resource_path: str, template: dict) -> list:
             if "paths" in rule:
                 for path in rule["paths"]:
                     obj_path = path["fixPath"]["path"]
-                    if not obj_path:
+                    if not obj_path and "failedPath" in path:
                         obj_path = path["failedPath"]
 
                     # Convert obj_path to the correct format
