@@ -9,7 +9,11 @@ metadata:
   name: busybox-pod
   namespace: busybox-namespace
   labels:
-    app: busybox-app
+    app: MyApp
+    app.kubernetes.io/name: MyApp
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    container.apparmor.security.beta.kubernetes.io/busybox-container: runtime/default
 spec:
   containers:
   - name: busybox-container
@@ -43,6 +47,18 @@ spec:
       periodSeconds: 10
     ports:
     - containerPort: 8089
+    securityContext:
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+        - ALL
+      allowPrivilegeEscalation: false
+  metadata:
+    labels:
+      app: MyApp
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
 ---
 apiVersion: v1
 kind: Service

@@ -78,6 +78,8 @@ def iterate_checks(chart_folder: str, json_path: str) -> None:
 
                     print(f"{control['controlID']}: {control['name']}")
                     check_id = fix_issue(control, resource_path, template)
+                    if check_id is None:
+                        check_id = "C-missing"
                     for rule in control["rules"]:
                         if "paths" in rule:
                             for _ in rule["paths"]:
@@ -287,6 +289,13 @@ class LookupClass:
         "C-0065": "check_54",
         "C-0063": "check_54",
         "C-0042": "check_68",
+        "C-0237": "",
+        "C-0193": "",
+        "C-0211": "",
+        "C-0210": "",
+        "C-0195": "",
+        "C-0196": "",
+        "C-0197": "",
         "C-0035": "",
         "C-0026": "", # Kubernetes CronJob
         "C-0012": "", # Applications credentials in configuration file
@@ -302,7 +311,10 @@ class LookupClass:
         Args:
             key (str): The check number.
         """
-        return cls._LOOKUP.get(key)
+        if key in cls._LOOKUP:
+            return cls._LOOKUP.get(key)
+        else:
+            return None
 
     @classmethod
     def print_value(cls, key) -> None:
