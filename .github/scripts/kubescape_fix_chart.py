@@ -306,7 +306,10 @@ class LookupClass:
         Args:
             key (str): The check number.
         """
-        return cls._LOOKUP.get(key)
+        if key in cls._LOOKUP:
+            return cls._LOOKUP.get(key)
+        else:
+            return None
 
     @classmethod
     def print_value(cls, key) -> None:
