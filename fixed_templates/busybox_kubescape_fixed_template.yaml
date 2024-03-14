@@ -48,17 +48,16 @@ spec:
     ports:
     - containerPort: 8089
     securityContext:
-      readOnlyRootFilesystem: true
       capabilities:
         drop:
         - ALL
       allowPrivilegeEscalation: false
-  metadata:
-    labels:
-      app: MyApp
   securityContext:
     seccompProfile:
       type: RuntimeDefault
+  metadata:
+    labels:
+      app: MyApp
 ---
 apiVersion: v1
 kind: Service
