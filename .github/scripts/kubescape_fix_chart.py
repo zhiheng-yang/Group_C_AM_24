@@ -289,6 +289,7 @@ class LookupClass:
         "C-0042": "check_68",
         "C-0237": "",
         "C-0211": "",
+        "C-0210": "",
         "C-0035": "",
         "C-0026": "", # Kubernetes CronJob
         "C-0012": "", # Applications credentials in configuration file
