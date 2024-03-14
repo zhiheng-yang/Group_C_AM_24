@@ -1,4 +1,4 @@
-# Group C - Trento Experiments
+# Group C - Amsterdam Experiments
 
 This repository contains the Helm Charts and GitHub Actions that Group C will analyze.
 
